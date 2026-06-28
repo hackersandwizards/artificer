@@ -1,0 +1,48 @@
+# Dependencies
+node_modules
+
+# Foreign package-manager lockfiles (this repo uses npm only)
+yarn.lock
+pnpm-lock.yaml
+bun.lock
+bun.lockb
+
+# Next.js
+.next
+out
+
+# Build
+build
+dist
+
+# Environment
+.env.local
+.env*.local
+
+# IDE
+.idea
+*.iml
+.vscode
+*.swp
+
+# Cache
+.eslintcache
+tsconfig.tsbuildinfo
+
+# Test
+coverage
+playwright-report
+test-results
+/.playwright
+
+# Misc
+*.log
+.DS_Store
+
+# SQLite
+*.db
+*.db-journal
+prisma/dev.db
+
+# Claude Code
+.claude/scheduled_tasks.lock
