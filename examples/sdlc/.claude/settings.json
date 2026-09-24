@@ -1,5 +1,6 @@
 {
   "autoCompactWindow": 400000,
+  "effortLevel": "medium",
   "enabledPlugins": {
     "skill-creator@claude-plugins-official": true,
     "build-workflow@hackersandwizards": true,
