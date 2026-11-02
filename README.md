@@ -10,15 +10,15 @@ A "dark factory" is a lights-out production line that runs without people watchi
 
 The `build-workflow` plugin scaffolds one stage at a time. Each stage gets a subagent with a gate that re-runs until its check passes, a launcher skill to run the stage on its own, and a line in a workflow script that threads each stage's output into the next.
 
-A worked example is the sdlc line in `examples/sdlc/`. A feature request goes in, a tested and accepted change comes out:
+A worked example is the sdlc line in `examples/sdlc/`. A feature request goes in; tests, an implementation, two reviews, a browser acceptance run and a commit come out:
 
 ```
-plan -> tests -> implement -> simplify -+-> review-claude -+-> converge -> acceptance -> report
+plan -> tests -> implement -> simplify -+-> review-claude -+-> converge -> acceptance -> commit -> report
                                         +-> review-codex --+       |
                                                     (real issues? loop back to implement, max 3)
 ```
 
-Nine stages. The two reviews run in parallel, converge waits for both and loops back on real issues. Every stage is a few lines you can read. The orchestration is plain JavaScript control flow, not a black box.
+Ten stages. The two reviews run in parallel, converge waits for both and loops back on real issues; after three rounds it stops and hands over to a human. Every stage is a few lines you can read, and the orchestration in `examples/sdlc/.claude/workflows/sdlc.js` is plain JavaScript control flow. The example was written for a Next.js app with Prisma, Chakra and Vitest: its gates run `npm test`, review-codex calls the Codex CLI, and acceptance drives the app at `http://localhost:3000` through the chrome-devtools MCP, with the dev server already running. Copy it into a project like that, or read it as a pattern.
 
 ## Install
 
@@ -41,7 +41,7 @@ For example, a first stage that turns a feature request into a plan:
 /build-workflow sdlc 1 plan: Turn the request into a plan with acceptance criteria / opus, high / Read, Write / true
 ```
 
-Each call appends a stage. The check command is the contract: a stage is done only when its gate exits 0 (tests green, build clean, review complete). For parallel stages, loops, and escalation, edit the generated `.claude/workflows/<workflow>.js` directly. The generator embeds the recipes as comments.
+Each call adds a stage; calling it again for an existing stage rewrites that stage. The workflow script runs as `/<workflow>` with the input as its arguments, for example `/sdlc <feature request>`; agents generated during a session register only after Claude Code restarts. The check command is the contract: a stage is done only when its gate exits 0, for example tests green or build clean. For parallel stages, loops, and escalation, edit the generated `.claude/workflows/<workflow>.js` directly. The generator embeds the recipes as comments.
 
 The plugin also ships `/improve-workflow`. It runs a generated workflow on a real input, checks that its assumptions hold (gates fire, structured returns branch, parallel stages overlap), and feeds what it learns back into the workflow and the generator templates.
 
