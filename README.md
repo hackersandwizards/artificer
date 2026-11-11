@@ -26,7 +26,7 @@ For example, a first stage that turns a feature request into a plan, on Opus at 
 the tools Read and Write and the check `true`:
 
 ```
-/build-workflow sdlc 1 plan: Plan the request / opus, high / Read, Write / true
+/build-workflow sdlc 1 plan: Plan with acceptance criteria / opus, high / Read, Write / true
 ```
 
 Each stage gets a subagent with a gate that re-runs until its check passes, a launcher skill to run the stage on its own, and a line in a workflow script that threads each stage's output into the next.
